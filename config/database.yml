@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: localhost
+  port: 5432
+  username: postgres1
+  password: 123456
+
+development:
+  <<: *default
+  database: yuvasoft2_development
+
+test:
+  <<: *default
+  database: yuvasoft2_test
+
+production:
+  <<: *default
+  database: yuvasoft2_development
