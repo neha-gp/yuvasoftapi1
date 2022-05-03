@@ -1,11 +1,12 @@
 class Api::V1::TeamsController < ApplicationController  
   before_action :set_team, only: [:show, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   # GET /teams
   def index
     @teams = Team.page(params[:page] || 1).per(params[:per_page] || 5)
 
-    render json: {status: 'SUCCESS', message: 'Loaded all teams', code: 200, data: @teams, meta: { total_pages: @teams.total_pages, total_entries: @teams.total_entries }}, status: :ok
+    render json: {status: 'SUCCESS', message: 'Loaded all teams', code: 200, data: @teams, pagination: { total_pages: @teams.total_pages, total_entries: @teams.total_entries }}, status: :ok
   end
 
   # GET /teams/1
@@ -29,7 +30,7 @@ class Api::V1::TeamsController < ApplicationController
     if @team.update(team_params)
       render json: {status: 'SUCCESS', message: 'team successfully updated', code: 200, data: @team}, status: :ok
     else
-      render json: { error: 'Unable to update team',status:error, code:400}, status: 400
+      render json: @team
     end
   end
 
@@ -45,8 +46,12 @@ class Api::V1::TeamsController < ApplicationController
       @team = Team.find(params[:id])
     end
 
+    def not_found
+      render json: { error: 'not found', code: 400 }, status: :not_found       
+    end
+
     # Only allow a list of trusted parameters through.
     def team_params
-      params.require(:team).permit(:first_name, :last_name, :contact, :email, :designation, :company_name, :description, :skills, :member_photo_file_name)
+      params.require(:team).permit(:first_name, :last_name, :contact, :email, :designation, :description, :member_photo_file_name)
     end
 end

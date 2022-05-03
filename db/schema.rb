@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_02_134126) do
+ActiveRecord::Schema.define(version: 2022_05_03_101018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,9 +105,7 @@ ActiveRecord::Schema.define(version: 2022_05_02_134126) do
     t.bigint "contact"
     t.string "email"
     t.string "designation"
-    t.string "company_name"
     t.text "description"
-    t.text "skills"
     t.string "member_photo_file_name"
     t.string "member_photo_content_type"
     t.integer "member_photo_file_size"
